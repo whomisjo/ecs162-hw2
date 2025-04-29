@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, jsonify, send_from_directory
 import os
 from flask_cors import CORS
@@ -11,6 +12,19 @@ CORS(app)
 @app.route('/api/key')
 def get_key():
     return jsonify({'apiKey': os.getenv('NYT_API_KEY')})
+
+@app.route('/api/stories')
+def get_stories():
+    key = os.getenv('NYT_API_KEY')
+    params = {
+        'api-key': key,          # gotta figure out proper searching parameters
+    }
+    
+    resp = requests.get(
+        'https://api.nytimes.com/svc/search/v2/articlesearch.json',
+        params=params
+    )
+    return jsonify(resp.json())
 
 @app.route('/')
 @app.route('/<path:path>')
