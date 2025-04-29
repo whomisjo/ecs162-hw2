@@ -1,5 +1,7 @@
-version: '3.8'
-
+version: '3.8'   
+#docker-compose -f docker-compose.dev.yml up --build -d     <- run container    (running thru docker)
+#docker-compose -f docker-compose.dev.yml down  <- stop container
+#docker-compose -f docker-compose.dev.yml logs -f frontend  <- log frontend
 services:
   frontend:
     image: node:18
