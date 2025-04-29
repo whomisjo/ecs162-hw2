@@ -104,10 +104,6 @@ footer {
   padding: 15px;
 }
 
-.story h2 { /* Only want desktop middle stories bolded*/
-  font-weight: normal; 
-}
-
 .story p {
   font-size: 1em;
   line-height: 1.6;
@@ -120,15 +116,6 @@ footer {
   width: 100%;
   object-fit: cover;
 }
-.story1 .story-img {
-  height: 320px;
-}
-.story3 .story-img {
-  height: 240px;
-}
-.story5 .story-img {
 
-  height: 340px;
-}
 
 
