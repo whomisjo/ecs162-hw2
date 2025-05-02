@@ -17,9 +17,8 @@ describe('App.svelte', () => {
       month: 'long',
       day: 'numeric'
     };
-    const today = new Date();
-    let currentDate = today.toLocaleDateString('en-US', options);
-    const date = await screen.getByText(currentDate)
+    const today = new Date().toLocaleDateString('en-US', options);
+    const date = await screen.findAllByText(today);
     expect(date).toBeTruthy();
   }),
   test('NYT API', async() => {
