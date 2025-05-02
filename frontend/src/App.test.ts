@@ -4,12 +4,14 @@ import { describe, test, expect } from 'vitest';
 import { vi } from 'vitest'
 
 describe('App.svelte', () => {
+  // searches for loading, if true, passes
   test('renders heading', () => {
     render(App);
     const loading = screen.getByText('Loading…')
     expect(loading).toBeTruthy();
   }),
   test('date', async () => {
+    //looks for all dates matching today's date, used to fail with getByText(found multiple dates & failed)
     render(App);
     const options = {
       weekday: 'long',
@@ -22,6 +24,8 @@ describe('App.svelte', () => {
     expect(date).toBeTruthy();
   }),
   test('NYT API', async() => {
+    //creates a mockup of NYT API from app.svelte, then test
+    //findByRole for headline and img, since they have roles, while abstract does not
     global.fetch = vi.fn(() =>
       Promise.resolve({
         json: () => Promise.resolve({ 
@@ -29,8 +33,8 @@ describe('App.svelte', () => {
               docs: [
                 {
                   headline: { main: 'Test Headline' },
-                  abstract: 'Test summary',
-                  multimedia: { default: { url: '/image.jpg' } }
+                  abstract: 'Test abstract',
+                  multimedia: { default: { url: '/img.jpg' } }
                 }
               ]
             }
@@ -41,7 +45,7 @@ describe('App.svelte', () => {
     render(App);
     const heading = await screen.findByRole('heading', { name: 'Test Headline' });
     expect(heading).toBeTruthy();
-    const abstract = await screen.findByText('Test summary');
+    const abstract = await screen.findByText('Test abstract');
     expect(abstract).toBeTruthy();
     const multimedia = await screen.findByRole('img', { name: 'Test Headline' });
     expect(multimedia).toBeTruthy();
