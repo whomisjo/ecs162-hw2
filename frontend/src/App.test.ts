@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/svelte';
+import { render, screen, waitFor } from '@testing-library/svelte';
 import App from './App.svelte';
 import { describe, test, expect } from 'vitest';
 import { vi } from 'vitest'
@@ -41,6 +41,7 @@ describe('App.svelte', () => {
           })
       })
     ) as unknown as typeof fetch;
+    
   
     render(App);
     const heading = await screen.findByRole('heading', { name: 'Test Headline' });
@@ -49,5 +50,17 @@ describe('App.svelte', () => {
     expect(abstract).toBeTruthy();
     const multimedia = await screen.findByRole('img', { name: 'Test Headline' });
     expect(multimedia).toBeTruthy();
+  });
+  test('sends a request to /api/stories', async () => {
+    //creates a mock up and spies on window.fetch to catch our backend call
+    const fetchSpy = vi.fn().mockResolvedValue({
+      json: () => Promise.resolve({ response: { docs: [] } })
+    }) as any;
+    global.fetch = fetchSpy;
+  
+    render(App);
+    await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
+  
+    expect(fetchSpy).toHaveBeenCalledWith('/api/stories');
   });
 });
